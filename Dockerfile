@@ -16,11 +16,9 @@ RUN apt-get clean && apt-get update && apt-get install -y --no-install-recommend
     texlive-latex-recommended \
     texlive-pictures \
     texlive-pstricks \
-    python-sphinxcontrib.plantuml \
-    python-sphinxcontrib.blockdiag \
-    python-sphinxcontrib.actdiag \
-    python-sphinxcontrib.nwdiag \
-    python-sphinxcontrib.seqdiag \
+    texlive-latex-extra \
+    make \
+    plantuml \
     python-pip \
     python-setuptools \
     latexmk
@@ -29,6 +27,12 @@ RUN pip install --upgrade pip
 
 #Install Sphinx with Nice Theme&Extention
 RUN pip install -U \
-    sphinxbootstrap4theme 
+    sphinx \
+    sphinxbootstrap4theme \
+    sphinxcontrib-blockdiag \
+    sphinxcontrib-actdiag \
+    sphinxcontrib-nwdiag \
+    sphinxcontrib-seqdiag \
+    sphinxcontrib-plantuml
 
 CMD ["python3"]
