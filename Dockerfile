@@ -1,44 +1,34 @@
-#For example
-#docker run --rm -v `pwd`:/tmp/sphinx --name sphinx sphinx-plantuml sphinx-build -b html /tmp/sphinx/source /tmp/sphinx/build
+FROM ubuntu:16.04
 
-FROM python:3.6-alpine
+MAINTAINER dve <dve@vergien.net>
 
-MAINTAINER tsgkdt <tsgkadot@gmail.com>
+RUN apt-get clean && apt-get update && apt-get install -y --no-install-recommends \
+    apt-utils \
+    texlive-base \
+    texlive-binaries \ 
+    texlive-extra-utils \
+    texlive-font-utils \
+    texlive-fonts-recommended \
+    texlive-generic-extra \
+    texlive-generic-recommended \
+    texlive-lang-german \
+    texlive-latex-base \
+    texlive-latex-recommended \
+    texlive-pictures \
+    texlive-pstricks \
+    python3-sphinxcontrib.plantuml \
+    python3-sphinxcontrib.blockdiag \
+    python3-sphinxcontrib.actdiag \
+    python3-sphinxcontrib.nwdiag \
+    python3-sphinxcontrib.seqdiag \
+    python3-pip \
+    python3-setuptools \
+    latexmk
 
-RUN apk --no-cache add openjdk8-jre graphviz jpeg-dev zlib-dev ttf-dejavu freetype-dev git && \
-    apk --no-cache --virtual=dependencies add build-base python-dev py-pip wget
+RUN pip3 install --upgrade pip
 
-ENV LIBRARY_PATH=/lib:/usr/lib
-#PlantUML
-ENV PLANTUML_DIR /usr/local/plantuml
-ENV PLANTUML_JAR plantuml.jar
-ENV PLANTUML $PLANTUML_DIR/$PLANTUML_JAR
-
-RUN \
-    #PlantUML
-    mkdir $PLANTUML_DIR && \
-    wget "https://sourceforge.net/projects/plantuml/files/plantuml.jar" --no-check-certificate && \
-    mv plantuml.jar $PLANTUML_DIR && \
-    #TakaoFont for Japanese
-    wget "https://launchpad.net/takao-fonts/trunk/15.03/+download/TakaoFonts_00303.01.tar.xz" && \
-    tar xvf TakaoFonts_00303.01.tar.xz -C /usr/share/fonts/ && \
-    rm -f TakaoFonts_00303.01.tar.xz && \
-    ln -s /usr/share/fonts/TakaoFonts_00303.01 /usr/share/fonts/TakaoFonts && \
-    #Upgrade pip
-    pip install --upgrade pip && \
-    #Install Sphinx with Nice Theme&Extention
-    pip install -U \
-    appdirs \
-    sphinx \
-    sphinxbootstrap4theme \
-    sphinx_materialdesign_theme \
-    sphinxcontrib-blockdiag \
-    sphinxcontrib-actdiag \
-    sphinxcontrib-nwdiag \
-    sphinxcontrib-seqdiag \
-    sphinxcontrib-plantuml && \
-    # for Build Infomation
-    pip freeze && \ 
-    apk del dependencies
+#Install Sphinx with Nice Theme&Extention
+RUN pip install -U \
+    sphinxbootstrap4theme 
 
 CMD ["python3"]
