@@ -19,6 +19,7 @@ RUN apt-get clean && apt-get update && apt-get install -y --no-install-recommend
     texlive-latex-extra \
     make \
     plantuml \
+    graphviz \
     python-pip \
     python-setuptools \
     latexmk
